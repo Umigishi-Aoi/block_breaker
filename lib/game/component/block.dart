@@ -58,8 +58,6 @@ class Block extends PositionComponent
     Set<Vector2> intersectionPoints,
     PositionComponent other,
   ) {
-    final collisionPoint = intersectionPoints.first;
-
     if (other is Ball) {
       removeFromParent();
     }

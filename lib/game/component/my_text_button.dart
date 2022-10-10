@@ -37,7 +37,7 @@ class MyTextButton extends TextBoxComponent
   }
 
   @override
-  void render(Canvas canvas) {
+  void render(Canvas c) {
     final rect = Rect.fromLTWH(
       0,
       0,
@@ -45,7 +45,7 @@ class MyTextButton extends TextBoxComponent
       size.y,
     );
     final bgPaint = Paint()..color = isGameOver ? Colors.red : Colors.blue;
-    canvas.drawRect(rect, bgPaint);
-    super.render(canvas);
+    c.drawRect(rect, bgPaint);
+    super.render(c);
   }
 }
