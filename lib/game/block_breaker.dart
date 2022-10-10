@@ -1,3 +1,4 @@
+import 'package:block_breaker/game/component/ball.dart';
 import 'package:block_breaker/game/component/paddle.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
@@ -9,6 +10,7 @@ class BlockBreaker extends FlameGame
     await addAll(
       [
         Paddle(),
+        Ball(),
       ],
     );
   }
