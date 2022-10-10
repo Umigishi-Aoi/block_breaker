@@ -7,11 +7,12 @@ import '../block_breaker.dart';
 
 class MyTextButton extends TextBoxComponent
     with TapCallbacks, HasGameRef<BlockBreaker> {
-  MyTextButton(String text, {this.isGameOver = false})
+  MyTextButton(String text, {this.isCleared = false, this.isGameOver = false})
       : super(
           text: text,
         );
 
+  final bool isCleared;
   final bool isGameOver;
 
   @override
@@ -32,6 +33,9 @@ class MyTextButton extends TextBoxComponent
   @override
   void onTapDown(TapDownEvent event) {
     gameRef.resetBall();
+    if (isCleared || isGameOver) {
+      gameRef.resetBlocks();
+    }
     removeFromParent();
     super.onTapDown(event);
   }

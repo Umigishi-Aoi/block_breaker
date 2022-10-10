@@ -33,6 +33,9 @@ class Ball extends CircleComponent
   @override
   void update(double dt) {
     position += velocity * dt;
+    if (gameRef.remainingBlocks == 0) {
+      removeFromParent();
+    }
 
     super.update(dt);
   }

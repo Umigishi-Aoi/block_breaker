@@ -40,8 +40,8 @@ const String kRestartButton = 'RestartButton';
 
 //Game Settings
 const int kGameTryCount = 3;
-const int kBlocksColumnCount = 4;
-const int kBlocksRowCount = 5;
+const int kBlocksColumnCount = 2;
+const int kBlocksRowCount = 3;
 
 //Block Settings
 const double kBlocksStartYPosition = 50;
