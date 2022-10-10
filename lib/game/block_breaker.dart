@@ -35,4 +35,16 @@ class BlockBreaker extends FlameGame
 
     await add(Ball());
   }
+
+  int failedCount = kGameTryCount;
+
+  Future<void> failed() async {
+    failedCount--;
+    if (failedCount == 0) {
+      failedCount = kGameTryCount;
+      await add(MyTextButton('Game Over', isGameOver: true));
+    } else {
+      await add(MyTextButton('Retry'));
+    }
+  }
 }

@@ -37,3 +37,6 @@ const int kCountdownDuration = 3;
 
 //kRestartButton Settings
 const String kRestartButton = 'RestartButton';
+
+//Game Settings
+const int kGameTryCount = 3;
