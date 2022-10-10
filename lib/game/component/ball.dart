@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
 import '../block_breaker.dart';
+import 'block.dart' as b;
 import 'paddle.dart';
 
 class Ball extends CircleComponent
@@ -53,6 +54,12 @@ class Ball extends CircleComponent
       if (collisionPoint.y >= gameRef.size.y) {
         gameRef.failed();
       }
+    }
+
+    if (other is b.Block) {
+      final blockRect = other.block.toAbsoluteRect();
+
+      updateBallTrajectory(collisionPoint, blockRect);
     }
 
     if (other is Paddle) {
