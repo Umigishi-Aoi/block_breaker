@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
@@ -70,6 +71,8 @@ class Ball extends CircleComponent
 
       updateBallTrajectory(collisionPoint, paddleRect);
     }
+
+    FlameAudio.play('20221011_ball_hit.wav');
 
     super.onCollisionStart(intersectionPoints, other);
   }
