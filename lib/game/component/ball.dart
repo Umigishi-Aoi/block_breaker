@@ -49,6 +49,10 @@ class Ball extends CircleComponent
       if (collisionPoint.y <= 0) {
         velocity.y = -velocity.y;
       }
+
+      if (collisionPoint.y >= gameRef.size.y) {
+        gameRef.failed();
+      }
     }
 
     if (other is Paddle) {
