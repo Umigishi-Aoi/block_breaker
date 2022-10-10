@@ -1,23 +1,24 @@
 import 'dart:async';
 
+import 'package:block_breaker/game/component/my_text_button.dart';
 import 'package:block_breaker/game/component/paddle.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
-import 'package:flame/input.dart';
 
 import '../constants/constants.dart';
 import 'component/ball.dart';
 import 'component/countdown_text.dart';
 
 class BlockBreaker extends FlameGame
-    with HasCollisionDetection, HasDraggableComponents, TapDetector {
+    with HasCollisionDetection, HasDraggableComponents, HasTappableComponents {
   @override
   Future<void> onLoad() async {
     await addAll(
       [
         ScreenHitbox(),
         Paddle(),
+        MyTextButton('Start'),
       ],
     );
   }

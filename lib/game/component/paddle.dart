@@ -17,7 +17,7 @@ class Paddle extends PositionComponent
 
     size = Vector2(kPaddleWidth, kPaddleHeight);
     position
-      ..x = worldRect.center.dx - size.x / 2
+      ..x = worldRect.width / 2 - size.x / 2
       ..y = worldRect.height - size.y - kPaddleStartY;
 
     paddle = RectangleComponent(
