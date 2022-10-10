@@ -15,10 +15,10 @@ class Paddle extends PositionComponent
   Future<void>? onLoad() {
     final worldRect = gameRef.size.toRect();
 
-    size = Vector2(PADDLE_WIDTH, PADDLE_HEIGHT);
+    size = Vector2(kPaddleWidth, kPaddleHeight);
     position
       ..x = worldRect.center.dx - size.x / 2
-      ..y = worldRect.height - size.y - PADDLE_START_Y;
+      ..y = worldRect.height - size.y - kPaddleStartY;
 
     paddle = RectangleComponent(
       size: size,
