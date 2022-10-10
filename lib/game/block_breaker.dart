@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:block_breaker/game/component/paddle.dart';
+import 'package:flame/collisions.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
@@ -15,6 +16,7 @@ class BlockBreaker extends FlameGame
   Future<void> onLoad() async {
     await addAll(
       [
+        ScreenHitbox(),
         Paddle(),
       ],
     );
