@@ -39,8 +39,8 @@ class BlockBreaker extends FlameGame
   }
 
   Future<void> resetBlocks() async {
-    final blocks =
-        List<Block>.generate(kBlocksColumnCount * kBlocksRowCount, (int index) {
+    remainingBlocks = kBlocksColumnCount * kBlocksRowCount;
+    final blocks = List<Block>.generate(remainingBlocks, (int index) {
       final indexX = index % kBlocksRowCount;
       final indexY = index ~/ kBlocksRowCount;
 
@@ -56,6 +56,8 @@ class BlockBreaker extends FlameGame
 
   int failedCount = kGameTryCount;
 
+  int remainingBlocks = kBlocksColumnCount * kBlocksRowCount;
+
   Future<void> failed() async {
     failedCount--;
     if (failedCount == 0) {
@@ -63,6 +65,13 @@ class BlockBreaker extends FlameGame
       await add(MyTextButton('Game Over', isGameOver: true));
     } else {
       await add(MyTextButton('Retry'));
+    }
+  }
+
+  Future<void> hit() async {
+    remainingBlocks--;
+    if (remainingBlocks == 0) {
+      await add(MyTextButton('Clear!', isCleared: true));
     }
   }
 }
