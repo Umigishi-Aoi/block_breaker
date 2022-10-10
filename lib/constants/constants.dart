@@ -14,6 +14,8 @@ const double kBallSpeed = 500;
 const double kBallStartYRatio = 1 / 2;
 const double kBallMinSpawnAngle = 45;
 const double kBallMaxSpawnAngle = 135;
+const int kBallRandomRatio = 5;
+const double kBallNudgeSpeed = 300;
 
 // Math Settings
 const double degree = pi / 180;
