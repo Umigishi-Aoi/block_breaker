@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
 import '../block_breaker.dart';
+import 'ball.dart';
 
 class Block extends PositionComponent
     with HasGameRef<BlockBreaker>, CollisionCallbacks {
@@ -46,8 +47,23 @@ class Block extends PositionComponent
 
     addAll([
       block,
+      blockHitBox,
     ]);
 
     return super.onLoad();
+  }
+
+  @override
+  void onCollisionStart(
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
+    final collisionPoint = intersectionPoints.first;
+
+    if (other is Ball) {
+      removeFromParent();
+    }
+
+    super.onCollisionStart(intersectionPoints, other);
   }
 }
