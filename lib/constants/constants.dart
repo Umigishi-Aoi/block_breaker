@@ -40,3 +40,21 @@ const String kRestartButton = 'RestartButton';
 
 //Game Settings
 const int kGameTryCount = 3;
+const int kBlocksColumnCount = 4;
+const int kBlocksRowCount = 5;
+
+//Block Settings
+const double kBlocksStartYPosition = 50;
+const double kBlocksStartXPosition = 50;
+const double kBlocksHeightRatio = 1 / 3;
+const List<MaterialColor> kBlockColors = [
+  Colors.red,
+  Colors.blue,
+  Colors.green,
+  Colors.yellow,
+  Colors.purple,
+  Colors.orange,
+];
+const String kBlockPositionX = 'x';
+const String kBlockPositionY = 'y';
+const double kBlockPadding = 5;

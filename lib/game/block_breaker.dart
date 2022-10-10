@@ -8,6 +8,7 @@ import 'package:flame/game.dart';
 
 import '../constants/constants.dart';
 import 'component/ball.dart';
+import 'component/block.dart';
 import 'component/countdown_text.dart';
 
 class BlockBreaker extends FlameGame
@@ -21,6 +22,7 @@ class BlockBreaker extends FlameGame
         MyTextButton('Start'),
       ],
     );
+    await resetBlocks();
   }
 
   Future<void> resetBall() async {
@@ -34,6 +36,22 @@ class BlockBreaker extends FlameGame
     }
 
     await add(Ball());
+  }
+
+  Future<void> resetBlocks() async {
+    final blocks =
+        List<Block>.generate(kBlocksColumnCount * kBlocksRowCount, (int index) {
+      final indexX = index % kBlocksRowCount;
+      final indexY = index ~/ kBlocksRowCount;
+
+      final blockPosition = {
+        kBlockPositionX: indexX,
+        kBlockPositionY: indexY,
+      };
+      return Block(blockPosition: blockPosition);
+    });
+
+    await addAll(blocks);
   }
 
   int failedCount = kGameTryCount;
