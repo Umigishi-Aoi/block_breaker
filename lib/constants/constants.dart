@@ -20,10 +20,10 @@ const double kBallNudgeSpeed = 300;
 // Math Settings
 const double degree = pi / 180;
 
-//Start Button Settings
-const String kStartButton = 'StartButton';
-const double kStartButtonWidth = 200;
-const double kStartButtonHeight = 50;
+//Button Settings
+const double kButtonWidth = 200;
+const double kButtonHeight = 50;
+const double kButtonPositionXAdjustRatio = 1.1;
 
 //Countdown Settings
 const double kCountdownSize = 200;
@@ -34,3 +34,6 @@ const TextStyle kCountdownTextStyle = TextStyle(
 );
 const double kCountDownPositionXRatio = 0.7;
 const int kCountdownDuration = 3;
+
+//kRestartButton Settings
+const String kRestartButton = 'RestartButton';
