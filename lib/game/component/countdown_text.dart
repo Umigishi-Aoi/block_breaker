@@ -15,10 +15,6 @@ class CountdownText extends TextComponent {
           ),
           text: '$count',
         );
-  @override
-  Future<void>? onLoad() {
-    return super.onLoad();
-  }
 
   final int count;
 
