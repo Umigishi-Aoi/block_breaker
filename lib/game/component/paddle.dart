@@ -5,31 +5,22 @@ import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
 
-class Paddle extends PositionComponent with CollisionCallbacks, DragCallbacks {
-  Paddle({required this.draggingPaddleCallback}) {
-    size = Vector2(kPaddleWidth, kPaddleHeight);
-  }
-
-  late final RectangleComponent paddle;
-  late final RectangleHitbox paddleHitBox;
+class Paddle extends RectangleComponent with CollisionCallbacks, DragCallbacks {
+  Paddle({required this.draggingPaddleCallback})
+      : super(
+          size: Vector2(kPaddleWidth, kPaddleHeight),
+          paint: Paint()..color = kPaddleColor,
+        );
 
   final void Function(DragUpdateEvent event) draggingPaddleCallback;
 
   @override
   Future<void>? onLoad() {
-    paddle = RectangleComponent(
-      size: size,
-      paint: Paint()..color = Colors.blue,
-    );
-
-    paddleHitBox = RectangleHitbox(
+    final paddleHitBox = RectangleHitbox(
       size: size,
     );
 
-    addAll([
-      paddle,
-      paddleHitBox,
-    ]);
+    add(paddleHitBox);
 
     return super.onLoad();
   }

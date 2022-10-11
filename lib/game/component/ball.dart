@@ -17,7 +17,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
   }) {
     radius = kBallRadius;
     size = Vector2.all(kBallRadius);
-    paint = Paint()..color = Colors.white;
+    paint = Paint()..color = kBallColor;
   }
   late Vector2 velocity;
 
@@ -64,7 +64,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
     }
 
     if (other is Paddle) {
-      final paddleRect = other.paddle.toAbsoluteRect();
+      final paddleRect = other.toAbsoluteRect();
 
       updateBallTrajectory(collisionPoint, paddleRect);
     }

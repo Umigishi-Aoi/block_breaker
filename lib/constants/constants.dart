@@ -7,6 +7,7 @@ const double kPaddleWidth = 100;
 const double kPaddleHeight = 20;
 //Start position from bottom.
 const double kPaddleStartY = 50;
+const Color kPaddleColor = Colors.blue;
 
 //Ball Settings
 const double kBallRadius = 20;
@@ -17,6 +18,7 @@ const double kBallMaxSpawnAngle = 135;
 const int kBallRandomNumber = 5;
 const double kBallNudgeSpeed = 300;
 const double kBallUncontrolledPositionY = 10;
+const Color kBallColor = Colors.white;
 
 // Math Settings
 const double kDegree = pi / 180;
