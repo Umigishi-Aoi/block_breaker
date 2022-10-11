@@ -112,7 +112,18 @@ class Ball extends CircleComponent
     final isTopOrBottomHit = isTopHit || isBottomHit;
 
     if (isLeftOrRightHit) {
+      if (isRightHit && velocity.x > 0) {
+        velocity.x += kBallNudgeSpeed;
+        return;
+      }
+
+      if (isLeftHit && velocity.x < 0) {
+        velocity.x -= kBallNudgeSpeed;
+        return;
+      }
+
       velocity.x = -velocity.x;
+      return;
     }
 
     if (isTopOrBottomHit) {

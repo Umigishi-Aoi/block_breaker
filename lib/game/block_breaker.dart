@@ -40,6 +40,7 @@ class BlockBreaker extends FlameGame
 
   Future<void> resetBlocks() async {
     remainingBlocks = kBlocksColumnCount * kBlocksRowCount;
+    failedCount = kGameTryCount;
     final blocks = List<Block>.generate(remainingBlocks, (int index) {
       final indexX = index % kBlocksRowCount;
       final indexY = index ~/ kBlocksRowCount;
