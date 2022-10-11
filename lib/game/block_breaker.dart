@@ -57,7 +57,7 @@ class BlockBreaker extends FlameGame
 
   int failedCount = kGameTryCount;
 
-  Future<void> failed(bool uncontrolledFailure) async {
+  Future<void> failed({required bool uncontrolledFailure}) async {
     if (!uncontrolledFailure) {
       failedCount--;
     }
