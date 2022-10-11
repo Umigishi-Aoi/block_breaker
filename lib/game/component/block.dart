@@ -59,8 +59,8 @@ class Block extends PositionComponent
     PositionComponent other,
   ) {
     if (other is Ball) {
-      gameRef.hit();
       removeFromParent();
+      gameRef.hit();
     }
 
     super.onCollisionStart(intersectionPoints, other);
