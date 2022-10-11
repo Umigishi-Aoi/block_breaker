@@ -6,8 +6,13 @@ import 'game/block_breaker.dart';
 void main() {
   final game = BlockBreaker();
   runApp(
-    GameWidget(
-      game: game,
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SafeArea(
+        child: GameWidget(
+          game: game,
+        ),
+      ),
     ),
   );
 }

@@ -18,7 +18,7 @@ class Block extends PositionComponent
   final Map<String, int> blockPosition;
 
   @override
-  Future<void>? onLoad() {
+  Future<void>? onLoad() async {
     size
       ..x = (gameRef.size.x -
               kBlocksStartXPosition * 2 -
@@ -45,7 +45,7 @@ class Block extends PositionComponent
       size: size,
     );
 
-    addAll([
+    await addAll([
       block,
       blockHitBox,
     ]);
@@ -60,9 +60,14 @@ class Block extends PositionComponent
   ) {
     if (other is Ball) {
       removeFromParent();
-      gameRef.hit();
     }
 
     super.onCollisionStart(intersectionPoints, other);
+  }
+
+  @override
+  Future<void> onRemove() async {
+    await gameRef.statusCheck();
+    super.onRemove();
   }
 }

@@ -13,15 +13,13 @@ import 'paddle.dart';
 
 class Ball extends CircleComponent
     with HasGameRef<BlockBreaker>, CollisionCallbacks {
-  Ball() {
-    paint = Paint()..color = Colors.white;
-    radius = kBallRadius;
-  }
-
   late Vector2 velocity;
 
   @override
   Future<void>? onLoad() {
+    paint = Paint()..color = Colors.white;
+    radius = kBallRadius;
+
     _resetBall();
 
     final hitBox = CircleHitbox(radius: radius);
@@ -34,10 +32,6 @@ class Ball extends CircleComponent
   @override
   void update(double dt) {
     position += velocity * dt;
-    if (gameRef.remainingBlocks == 0) {
-      removeFromParent();
-    }
-
     super.update(dt);
   }
 
