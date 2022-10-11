@@ -58,7 +58,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
     }
 
     if (other is b.Block) {
-      final blockRect = other.block.toAbsoluteRect();
+      final blockRect = other.toAbsoluteRect();
 
       updateBallTrajectory(collisionPoint, blockRect);
     }

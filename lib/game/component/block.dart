@@ -5,50 +5,26 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
-import '../block_breaker.dart';
 import 'ball.dart';
 
-class Block extends PositionComponent
-    with HasGameRef<BlockBreaker>, CollisionCallbacks {
-  Block({required this.blockPosition});
+class Block extends RectangleComponent with CollisionCallbacks {
+  Block({required this.blockSize, required this.onBlockRemove})
+      : super(
+          size: blockSize,
+          paint: Paint()
+            ..color = kBlockColors[Random().nextInt(kBlockColors.length)],
+        );
 
-  late final RectangleComponent block;
-  late final RectangleHitbox blockHitBox;
-
-  final Map<String, int> blockPosition;
+  final Vector2 blockSize;
+  final Future<void> Function() onBlockRemove;
 
   @override
   Future<void>? onLoad() async {
-    size
-      ..x = (gameRef.size.x -
-              kBlocksStartXPosition * 2 -
-              kBlockPadding * (kBlocksRowCount - 1)) /
-          kBlocksRowCount
-      ..y = (gameRef.size.y * kBlocksHeightRatio -
-              kBlocksStartYPosition -
-              kBlockPadding * (kBlocksColumnCount - 1)) /
-          kBlocksRowCount;
-
-    position
-      ..x = kBlocksStartXPosition +
-          blockPosition[kBlockPositionX]! * (size.x + kBlockPadding)
-      ..y = kBlocksStartYPosition +
-          blockPosition[kBlockPositionY]! * (size.y + kBlockPadding);
-
-    block = RectangleComponent(
-      size: size,
-      paint: Paint()
-        ..color = kBlockColors[Random().nextInt(kBlockColors.length)],
-    );
-
-    blockHitBox = RectangleHitbox(
+    final blockHitBox = RectangleHitbox(
       size: size,
     );
 
-    await addAll([
-      block,
-      blockHitBox,
-    ]);
+    await add(blockHitBox);
 
     return super.onLoad();
   }
@@ -67,7 +43,7 @@ class Block extends PositionComponent
 
   @override
   Future<void> onRemove() async {
-    await gameRef.statusCheck();
+    await onBlockRemove();
     super.onRemove();
   }
 }

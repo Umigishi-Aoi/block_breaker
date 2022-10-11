@@ -80,14 +80,38 @@ class BlockBreaker extends FlameGame
     failedCount = kGameTryCount;
     final blocks =
         List<Block>.generate(kBlocksColumnCount * kBlocksRowCount, (int index) {
+      final sizeX = (size.x -
+              kBlocksStartXPosition * 2 -
+              kBlockPadding * (kBlocksRowCount - 1)) /
+          kBlocksRowCount;
+          
+      final sizeY = (size.y * kBlocksHeightRatio -
+              kBlocksStartYPosition -
+              kBlockPadding * (kBlocksColumnCount - 1)) /
+          kBlocksRowCount;
+
+      final block = Block(
+        blockSize: Vector2(sizeX, sizeY),
+        onBlockRemove: onBlockRemove,
+      );
+
       final indexX = index % kBlocksRowCount;
       final indexY = index ~/ kBlocksRowCount;
 
-      final blockPosition = {
+      final blockPositionIndex = {
         kBlockPositionX: indexX,
         kBlockPositionY: indexY,
       };
-      return Block(blockPosition: blockPosition);
+
+      block.position
+        ..x = kBlocksStartXPosition +
+            blockPositionIndex[kBlockPositionX]! *
+                (block.size.x + kBlockPadding)
+        ..y = kBlocksStartYPosition +
+            blockPositionIndex[kBlockPositionY]! *
+                (block.size.y + kBlockPadding);
+
+      return block;
     });
 
     await addAll(blocks);
@@ -105,7 +129,7 @@ class BlockBreaker extends FlameGame
     }
   }
 
-  Future<void> statusCheck() async {
+  Future<void> onBlockRemove() async {
     if (isCleared) {
       await add(MyTextButton('Clear!', isCleared: true));
       children.whereType<Ball>().forEach((ball) {
