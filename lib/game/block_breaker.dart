@@ -57,8 +57,10 @@ class BlockBreaker extends FlameGame
 
   int failedCount = kGameTryCount;
 
-  Future<void> failed() async {
-    failedCount--;
+  Future<void> failed(bool uncontrolledFailure) async {
+    if (!uncontrolledFailure) {
+      failedCount--;
+    }
     if (failedCount == 0) {
       failedCount = kGameTryCount;
       await add(MyTextButton('Game Over', isGameOver: true));
@@ -67,9 +69,11 @@ class BlockBreaker extends FlameGame
     }
   }
 
+  bool get isCleared => children.whereType<Block>().isEmpty;
+
   Future<void> statusCheck() async {
-    if (children.whereType<Block>().isEmpty) {
-      await add(MyTextButton('Clear', isCleared: true));
+    if (isCleared) {
+      await add(MyTextButton('Clear!', isCleared: true));
       children.whereType<Ball>().forEach((ball) {
         ball.removeFromParent();
       });
