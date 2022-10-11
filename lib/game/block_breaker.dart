@@ -7,6 +7,7 @@ import 'package:block_breaker/game/component/paddle.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
 import 'component/ball.dart';
@@ -19,6 +20,8 @@ class BlockBreaker extends FlameGame
   bool uncontrolledFailure = false;
 
   bool get isCleared => children.whereType<Block>().isEmpty;
+
+  bool get isGameOver => failedCount == 0;
 
   double get spawnAngle {
     final random = Random().nextDouble();
@@ -35,11 +38,12 @@ class BlockBreaker extends FlameGame
       ..position.x = size.x / 2 - paddleSize.x / 2
       ..position.y = size.y - paddleSize.y - kPaddleStartY;
 
+    await addMyTextButton('Start!');
+
     await addAll(
       [
         ScreenHitbox(),
         paddle,
-        MyTextButton('Start'),
       ],
     );
     await resetBlocks();
@@ -84,7 +88,7 @@ class BlockBreaker extends FlameGame
               kBlocksStartXPosition * 2 -
               kBlockPadding * (kBlocksRowCount - 1)) /
           kBlocksRowCount;
-          
+
       final sizeY = (size.y * kBlocksHeightRatio -
               kBlocksStartYPosition -
               kBlockPadding * (kBlocksColumnCount - 1)) /
@@ -121,17 +125,16 @@ class BlockBreaker extends FlameGame
     if (!uncontrolledFailure) {
       failedCount--;
     }
-    if (failedCount == 0) {
-      failedCount = kGameTryCount;
-      await add(MyTextButton('Game Over', isGameOver: true));
+    if (isGameOver) {
+      await addMyTextButton('Game Over!');
     } else {
-      await add(MyTextButton('Retry'));
+      await addMyTextButton('Retry');
     }
   }
 
   Future<void> onBlockRemove() async {
     if (isCleared) {
-      await add(MyTextButton('Clear!', isCleared: true));
+      await addMyTextButton('Clear!');
       children.whereType<Ball>().forEach((ball) {
         ball.removeFromParent();
       });
@@ -184,5 +187,42 @@ class BlockBreaker extends FlameGame
       await failed(uncontrolledFailure: uncontrolledFailure);
       uncontrolledFailure = false;
     }
+  }
+
+  Future<void> onTapDownMyTextButton() async {
+    children.whereType<MyTextButton>().forEach((button) {
+      button.removeFromParent();
+    });
+    await resetBall();
+    if (isCleared || isGameOver) {
+      await resetBlocks();
+      failedCount = kGameTryCount;
+    }
+  }
+
+  void renderMyTextButton(Canvas canvas) {
+    final myTextButton = children.whereType<MyTextButton>().first;
+    final rect = Rect.fromLTWH(
+      0,
+      0,
+      myTextButton.size.x,
+      myTextButton.size.y,
+    );
+    final bgPaint = Paint()..color = isGameOver ? Colors.red : Colors.blue;
+    canvas.drawRect(rect, bgPaint);
+  }
+
+  Future<void> addMyTextButton(String text) async {
+    final myTextButton = MyTextButton(
+      text,
+      onTapDownMyTextButton: onTapDownMyTextButton,
+      renderMyTextButton: renderMyTextButton,
+    );
+
+    myTextButton.position
+      ..x = size.x / 2 - myTextButton.size.x / 2
+      ..y = size.y / 2 - myTextButton.size.y / 2;
+
+    await add(myTextButton);
   }
 }

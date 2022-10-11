@@ -3,53 +3,30 @@ import 'package:flame/experimental.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
-import '../block_breaker.dart';
 
-class MyTextButton extends TextBoxComponent
-    with TapCallbacks, HasGameRef<BlockBreaker> {
-  MyTextButton(String text, {this.isCleared = false, this.isGameOver = false})
-      : super(
+class MyTextButton extends TextBoxComponent with TapCallbacks {
+  MyTextButton(
+    String text, {
+    required this.onTapDownMyTextButton,
+    required this.renderMyTextButton,
+  }) : super(
           text: text,
+          size: Vector2(kButtonWidth, kButtonHeight),
+          align: Anchor.center,
         );
 
-  final bool isCleared;
-  final bool isGameOver;
+  final Future<void> Function() onTapDownMyTextButton;
+  final void Function(Canvas canvas) renderMyTextButton;
 
   @override
-  Future<void> onLoad() {
-    size
-      ..x = kButtonWidth
-      ..y = kButtonHeight;
-
-    position
-      ..x = gameRef.size.x / 2 - size.x / 2 * kButtonPositionXAdjustRatio
-      ..y = gameRef.size.y / 2 - size.y / 2;
-
-    align = Anchor.center;
-
-    return super.onLoad();
-  }
-
-  @override
-  void onTapDown(TapDownEvent event) {
-    gameRef.resetBall();
-    if (isCleared || isGameOver) {
-      gameRef.resetBlocks();
-    }
-    removeFromParent();
+  Future<void> onTapDown(TapDownEvent event) async {
+    await onTapDownMyTextButton();
     super.onTapDown(event);
   }
 
   @override
   void render(Canvas c) {
-    final rect = Rect.fromLTWH(
-      0,
-      0,
-      size.x,
-      size.y,
-    );
-    final bgPaint = Paint()..color = isGameOver ? Colors.red : Colors.blue;
-    c.drawRect(rect, bgPaint);
+    renderMyTextButton(c);
     super.render(c);
   }
 }
