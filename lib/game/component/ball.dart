@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
@@ -7,44 +6,45 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
-import '../block_breaker.dart';
 import 'block.dart' as b;
 import 'paddle.dart';
 
-class Ball extends CircleComponent
-    with HasGameRef<BlockBreaker>, CollisionCallbacks {
+class Ball extends CircleComponent with CollisionCallbacks {
+  Ball({
+    required this.updateBall,
+    required this.collisionBallScreenHitBox,
+    required this.onBallRemove,
+  }) {
+    radius = kBallRadius;
+    size = Vector2.all(kBallRadius);
+    paint = Paint()..color = Colors.white;
+  }
   late Vector2 velocity;
 
+  final void Function(double dt) updateBall;
+  final void Function(Vector2 collisionPoint) collisionBallScreenHitBox;
+  final Future<void> Function() onBallRemove;
+
   @override
-  Future<void>? onLoad() {
-    paint = Paint()..color = Colors.white;
-    radius = kBallRadius;
-
-    _resetBall();
-
+  Future<void>? onLoad() async {
     final hitBox = CircleHitbox(radius: radius);
 
-    add(hitBox);
+    await add(hitBox);
 
     return super.onLoad();
   }
 
-  bool uncontrolledFailure = false;
-
   @override
   void update(double dt) {
-    position += velocity * dt;
-
-    if (position.y < -kBallUncontrolledPositionY) {
-      uncontrolledFailure = true;
-      removeFromParent();
-    }
-
-    if (position.y > gameRef.size.y + kBallUncontrolledPositionY) {
-      removeFromParent();
-    }
+    updateBall(dt);
 
     super.update(dt);
+  }
+
+  @override
+  Future<void> onRemove() async {
+    await onBallRemove();
+    super.onRemove();
   }
 
   @override
@@ -54,16 +54,7 @@ class Ball extends CircleComponent
   ) {
     final collisionPoint = intersectionPoints.first;
     if (other is ScreenHitbox) {
-      if (collisionPoint.x <= 0 || collisionPoint.x >= gameRef.size.x) {
-        velocity.x = -velocity.x;
-      }
-      if (collisionPoint.y <= 0) {
-        velocity.y = -velocity.y;
-      }
-
-      if (collisionPoint.y >= gameRef.size.y) {
-        removeFromParent();
-      }
+      collisionBallScreenHitBox(collisionPoint);
     }
 
     if (other is b.Block) {
@@ -83,36 +74,14 @@ class Ball extends CircleComponent
     super.onCollisionStart(intersectionPoints, other);
   }
 
-  void _resetBall() {
-    size = Vector2.all(kBallRadius);
-    position
-      ..x = gameRef.size.x / 2 - size.x / 2
-      ..y = gameRef.size.y * kBallStartYRatio;
-
-    final vx = kBallSpeed * cos(spawnAngle * degree);
-    final vy = kBallSpeed * sin(spawnAngle * degree);
-
-    velocity = Vector2(
-      vx,
-      vy,
-    );
-  }
-
-  double get spawnAngle {
-    final random = Random().nextDouble();
-    final spawnAngle =
-        lerpDouble(kBallMinSpawnAngle, kBallMaxSpawnAngle, random)!;
-    return spawnAngle;
-  }
-
   void updateBallTrajectory(
     Vector2 collisionPoint,
-    Rect paddleRect,
+    Rect rect,
   ) {
-    final isLeftHit = collisionPoint.x == paddleRect.left;
-    final isRightHit = collisionPoint.x == paddleRect.right;
-    final isTopHit = collisionPoint.y == paddleRect.top;
-    final isBottomHit = collisionPoint.y == paddleRect.bottom;
+    final isLeftHit = collisionPoint.x == rect.left;
+    final isRightHit = collisionPoint.x == rect.right;
+    final isTopHit = collisionPoint.y == rect.top;
+    final isBottomHit = collisionPoint.y == rect.bottom;
 
     final isLeftOrRightHit = isLeftHit || isRightHit;
     final isTopOrBottomHit = isTopHit || isBottomHit;
@@ -138,14 +107,5 @@ class Ball extends CircleComponent
         velocity.x += kBallNudgeSpeed;
       }
     }
-  }
-
-  @override
-  Future<void> onRemove() async {
-    if (!gameRef.isCleared) {
-      await gameRef.failed(uncontrolledFailure: uncontrolledFailure);
-      uncontrolledFailure = false;
-    }
-    super.onRemove();
   }
 }

@@ -19,7 +19,7 @@ const double kBallNudgeSpeed = 300;
 const double kBallUncontrolledPositionY = 10;
 
 // Math Settings
-const double degree = pi / 180;
+const double kDegree = pi / 180;
 
 //Button Settings
 const double kButtonWidth = 200;

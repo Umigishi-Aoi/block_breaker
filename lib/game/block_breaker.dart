@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:math';
+import 'dart:ui';
 
 import 'package:block_breaker/game/component/my_text_button.dart';
 import 'package:block_breaker/game/component/paddle.dart';
@@ -13,6 +15,18 @@ import 'component/countdown_text.dart';
 
 class BlockBreaker extends FlameGame
     with HasCollisionDetection, HasDraggableComponents, HasTappableComponents {
+  int failedCount = kGameTryCount;
+  bool uncontrolledFailure = false;
+
+  bool get isCleared => children.whereType<Block>().isEmpty;
+
+  double get spawnAngle {
+    final random = Random().nextDouble();
+    final spawnAngle =
+        lerpDouble(kBallMinSpawnAngle, kBallMaxSpawnAngle, random)!;
+    return spawnAngle;
+  }
+
   @override
   Future<void> onLoad() async {
     final paddle = Paddle(draggingPaddleCallback: draggingPaddle);
@@ -41,7 +55,25 @@ class BlockBreaker extends FlameGame
       await Future<void>.delayed(const Duration(seconds: 1));
     }
 
-    await add(Ball());
+    final ball = Ball(
+      updateBall: updateBall,
+      collisionBallScreenHitBox: collisionBallScreenHitBox,
+      onBallRemove: onBallRemove,
+    );
+
+    ball.position
+      ..x = size.x / 2 - ball.size.x / 2
+      ..y = size.y * kBallStartYRatio;
+
+    final vx = kBallSpeed * cos(spawnAngle * kDegree);
+    final vy = kBallSpeed * sin(spawnAngle * kDegree);
+
+    ball.velocity = Vector2(
+      vx,
+      vy,
+    );
+
+    await add(ball);
   }
 
   Future<void> resetBlocks() async {
@@ -61,8 +93,6 @@ class BlockBreaker extends FlameGame
     await addAll(blocks);
   }
 
-  int failedCount = kGameTryCount;
-
   Future<void> failed({required bool uncontrolledFailure}) async {
     if (!uncontrolledFailure) {
       failedCount--;
@@ -74,8 +104,6 @@ class BlockBreaker extends FlameGame
       await add(MyTextButton('Retry'));
     }
   }
-
-  bool get isCleared => children.whereType<Block>().isEmpty;
 
   Future<void> statusCheck() async {
     if (isCleared) {
@@ -96,6 +124,41 @@ class BlockBreaker extends FlameGame
     }
     if (paddle.position.x > size.x - paddle.size.x) {
       paddle.position.x = size.x - paddle.size.x;
+    }
+  }
+
+  void updateBall(double dt) {
+    final ball = children.whereType<Ball>().first;
+    ball.position += ball.velocity * dt;
+
+    if (ball.position.y < -kBallUncontrolledPositionY) {
+      uncontrolledFailure = true;
+      ball.removeFromParent();
+    }
+
+    if (ball.position.y > size.y + kBallUncontrolledPositionY) {
+      ball.removeFromParent();
+    }
+  }
+
+  void collisionBallScreenHitBox(Vector2 collisionPoint) {
+    final ball = children.whereType<Ball>().first;
+    if (collisionPoint.x <= 0 || collisionPoint.x >= size.x) {
+      ball.velocity.x = -ball.velocity.x;
+    }
+    if (collisionPoint.y <= 0) {
+      ball.velocity.y = -ball.velocity.y;
+    }
+
+    if (collisionPoint.y >= size.y) {
+      ball.removeFromParent();
+    }
+  }
+
+  Future<void> onBallRemove() async {
+    if (!isCleared) {
+      await failed(uncontrolledFailure: uncontrolledFailure);
+      uncontrolledFailure = false;
     }
   }
 }
