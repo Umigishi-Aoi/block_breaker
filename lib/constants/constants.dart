@@ -26,16 +26,14 @@ const double kDegree = pi / 180;
 //Button Settings
 const double kButtonWidth = 200;
 const double kButtonHeight = 50;
-const double kButtonPositionXAdjustRatio = 1.1;
 
 //Countdown Settings
 const double kCountdownSize = 200;
 const TextStyle kCountdownTextStyle = TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
-  fontSize: 200,
+  fontSize: 160,
 );
-const double kCountDownPositionXRatio = 0.7;
 const int kCountdownDuration = 3;
 
 //kRestartButton Settings

@@ -51,11 +51,14 @@ class BlockBreaker extends FlameGame
 
   Future<void> resetBall() async {
     for (var i = kCountdownDuration; i > 0; i--) {
-      await add(
-        CountdownText(
-          count: i,
-        ),
-      );
+      final countdownText = CountdownText(count: i);
+
+      countdownText.position
+        ..x = size.x / 2 - countdownText.size.x / 2
+        ..y = size.y / 2 - countdownText.size.y / 2;
+
+      await add(countdownText);
+
       await Future<void>.delayed(const Duration(seconds: 1));
     }
 
