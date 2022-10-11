@@ -143,7 +143,7 @@ class Ball extends CircleComponent
   @override
   Future<void> onRemove() async {
     if (!gameRef.isCleared) {
-      await gameRef.failed(uncontrolledFailure);
+      await gameRef.failed(uncontrolledFailure: uncontrolledFailure);
       uncontrolledFailure = false;
     }
     super.onRemove();
