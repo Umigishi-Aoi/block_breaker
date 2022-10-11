@@ -134,7 +134,7 @@ class Ball extends CircleComponent
 
     if (isTopOrBottomHit) {
       velocity.y = -velocity.y;
-      if (Random().nextInt(kBallRandomRatio) % kBallRandomRatio == 0) {
+      if (Random().nextInt(kBallRandomNumber) % kBallRandomNumber == 0) {
         velocity.x += kBallNudgeSpeed;
       }
     }
