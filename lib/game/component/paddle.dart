@@ -4,22 +4,19 @@ import 'package:flame/experimental.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
-import '../block_breaker.dart';
 
-class Paddle extends PositionComponent
-    with HasGameRef<BlockBreaker>, CollisionCallbacks, DragCallbacks {
+class Paddle extends PositionComponent with CollisionCallbacks, DragCallbacks {
+  Paddle({required this.draggingPaddleCallback}) {
+    size = Vector2(kPaddleWidth, kPaddleHeight);
+  }
+
   late final RectangleComponent paddle;
   late final RectangleHitbox paddleHitBox;
 
+  final void Function(DragUpdateEvent event) draggingPaddleCallback;
+
   @override
   Future<void>? onLoad() {
-    final worldRect = gameRef.size.toRect();
-
-    size = Vector2(kPaddleWidth, kPaddleHeight);
-    position
-      ..x = worldRect.width / 2 - size.x / 2
-      ..y = worldRect.height - size.y - kPaddleStartY;
-
     paddle = RectangleComponent(
       size: size,
       paint: Paint()..color = Colors.blue,
@@ -54,15 +51,7 @@ class Paddle extends PositionComponent
   @override
   void onDragUpdate(DragUpdateEvent event) {
     if (isDragged) {
-      if (position.x >= 0 && position.x <= gameRef.size.x - size.x) {
-        position.x += event.delta.x;
-      }
-      if (position.x < 0) {
-        position.x = 0;
-      }
-      if (position.x > gameRef.size.x - size.x) {
-        position.x = gameRef.size.x - size.x;
-      }
+      draggingPaddleCallback(event);
     }
     super.onDragUpdate(event);
   }
