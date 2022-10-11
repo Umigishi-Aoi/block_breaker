@@ -29,9 +29,21 @@ class Ball extends CircleComponent
     return super.onLoad();
   }
 
+  bool uncontrolledFailure = false;
+
   @override
   void update(double dt) {
     position += velocity * dt;
+
+    if (position.y < -kBallUncontrolledPositionY) {
+      uncontrolledFailure = true;
+      removeFromParent();
+    }
+
+    if (position.y > gameRef.size.y + kBallUncontrolledPositionY) {
+      removeFromParent();
+    }
+
     super.update(dt);
   }
 
@@ -50,7 +62,7 @@ class Ball extends CircleComponent
       }
 
       if (collisionPoint.y >= gameRef.size.y) {
-        gameRef.failed();
+        removeFromParent();
       }
     }
 
@@ -126,5 +138,14 @@ class Ball extends CircleComponent
         velocity.x += kBallNudgeSpeed;
       }
     }
+  }
+
+  @override
+  Future<void> onRemove() async {
+    if (!gameRef.isCleared) {
+      await gameRef.failed(uncontrolledFailure);
+      uncontrolledFailure = false;
+    }
+    super.onRemove();
   }
 }
