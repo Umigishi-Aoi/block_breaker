@@ -84,6 +84,11 @@ class BlockBreaker extends FlameGame
   }
 
   Future<void> resetBlocks() async {
+
+    children.whereType<Block>().forEach((block) {
+      block.removeFromParent();
+    });
+
     failedCount = kGameTryCount;
     final blocks =
         List<Block>.generate(kBlocksColumnCount * kBlocksRowCount, (int index) {
@@ -196,11 +201,12 @@ class BlockBreaker extends FlameGame
     children.whereType<MyTextButton>().forEach((button) {
       button.removeFromParent();
     });
-    await resetBall();
+
     if (isCleared || isGameOver) {
       await resetBlocks();
       failedCount = kGameTryCount;
     }
+    await resetBall();
   }
 
   void renderMyTextButton(Canvas canvas) {
