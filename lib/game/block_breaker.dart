@@ -88,18 +88,19 @@ class BlockBreaker extends FlameGame
     });
 
     failedCount = kGameTryCount;
+
+    final sizeX = (size.x -
+            kBlocksStartXPosition * 2 -
+            kBlockPadding * (kBlocksRowCount - 1)) /
+        kBlocksRowCount;
+
+    final sizeY = (size.y * kBlocksHeightRatio -
+            kBlocksStartYPosition -
+            kBlockPadding * (kBlocksColumnCount - 1)) /
+        kBlocksRowCount;
+
     final blocks =
         List<Block>.generate(kBlocksColumnCount * kBlocksRowCount, (int index) {
-      final sizeX = (size.x -
-              kBlocksStartXPosition * 2 -
-              kBlockPadding * (kBlocksRowCount - 1)) /
-          kBlocksRowCount;
-
-      final sizeY = (size.y * kBlocksHeightRatio -
-              kBlocksStartYPosition -
-              kBlockPadding * (kBlocksColumnCount - 1)) /
-          kBlocksRowCount;
-
       final block = Block(
         blockSize: Vector2(sizeX, sizeY),
         onBlockRemove: onBlockRemove,
