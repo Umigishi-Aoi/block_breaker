@@ -109,18 +109,9 @@ class BlockBreaker extends FlameGame
       final indexX = index % kBlocksRowCount;
       final indexY = index ~/ kBlocksRowCount;
 
-      final blockPositionIndex = {
-        kBlockPositionX: indexX,
-        kBlockPositionY: indexY,
-      };
-
       block.position
-        ..x = kBlocksStartXPosition +
-            blockPositionIndex[kBlockPositionX]! *
-                (block.size.x + kBlockPadding)
-        ..y = kBlocksStartYPosition +
-            blockPositionIndex[kBlockPositionY]! *
-                (block.size.y + kBlockPadding);
+        ..x = kBlocksStartXPosition + indexX * (block.size.x + kBlockPadding)
+        ..y = kBlocksStartYPosition + indexY * (block.size.y + kBlockPadding);
 
       return block;
     });
