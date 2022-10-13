@@ -7,7 +7,6 @@ import 'package:block_breaker/game/component/paddle.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
 import 'component/ball.dart';
@@ -84,7 +83,6 @@ class BlockBreaker extends FlameGame
   }
 
   Future<void> resetBlocks() async {
-
     children.whereType<Block>().forEach((block) {
       block.removeFromParent();
     });
@@ -217,7 +215,8 @@ class BlockBreaker extends FlameGame
       myTextButton.size.x,
       myTextButton.size.y,
     );
-    final bgPaint = Paint()..color = isGameOver ? Colors.red : Colors.blue;
+    final bgPaint = Paint()
+      ..color = isGameOver ? kGameOverButtonColor : kButtonColor;
     canvas.drawRect(rect, bgPaint);
   }
 

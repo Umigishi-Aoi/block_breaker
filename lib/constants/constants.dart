@@ -26,6 +26,8 @@ const double kDegree = pi / 180;
 //Button Settings
 const double kButtonWidth = 200;
 const double kButtonHeight = 50;
+const Color kButtonColor = Colors.blue;
+const Color kGameOverButtonColor = Colors.red;
 
 //Countdown Settings
 const double kCountdownSize = 200;
