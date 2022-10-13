@@ -16,7 +16,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
     required this.onBallRemove,
   }) {
     radius = kBallRadius;
-    size = Vector2.all(kBallRadius);
+    size = Vector2.all(kBallRadius * 2);
     paint = Paint()..color = kBallColor;
   }
   late Vector2 velocity;
