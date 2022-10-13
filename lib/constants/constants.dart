@@ -1,8 +1,8 @@
-//Paddle Settings
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+//Paddle Settings
 const double kPaddleWidth = 100;
 const double kPaddleHeight = 20;
 //Start position from bottom.
