@@ -36,9 +36,6 @@ const TextStyle kCountdownTextStyle = TextStyle(
 );
 const int kCountdownDuration = 3;
 
-//kRestartButton Settings
-const String kRestartButton = 'RestartButton';
-
 //Game Settings
 const int kGameTryCount = 3;
 const int kBlocksColumnCount = 2;
