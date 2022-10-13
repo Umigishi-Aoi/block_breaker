@@ -10,7 +10,7 @@ const double kPaddleStartY = 50;
 const Color kPaddleColor = Colors.blue;
 
 //Ball Settings
-const double kBallRadius = 20;
+const double kBallRadius = 10;
 const double kBallSpeed = 500;
 const double kBallStartYRatio = 1 / 2;
 const double kBallMinSpawnAngle = 45;
