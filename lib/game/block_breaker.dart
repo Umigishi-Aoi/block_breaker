@@ -61,7 +61,11 @@ class BlockBreaker extends FlameGame
       await Future<void>.delayed(const Duration(seconds: 1));
     }
 
+    final vx = kBallSpeed * cos(spawnAngle * kDegree);
+    final vy = kBallSpeed * sin(spawnAngle * kDegree);
+
     final ball = Ball(
+      velocity: Vector2(vx, vy),
       updateBall: updateBall,
       collisionBallScreenHitBox: collisionBallScreenHitBox,
       onBallRemove: onBallRemove,
@@ -70,14 +74,6 @@ class BlockBreaker extends FlameGame
     ball.position
       ..x = size.x / 2 - ball.size.x / 2
       ..y = size.y * kBallStartYRatio;
-
-    final vx = kBallSpeed * cos(spawnAngle * kDegree);
-    final vy = kBallSpeed * sin(spawnAngle * kDegree);
-
-    ball.velocity = Vector2(
-      vx,
-      vy,
-    );
 
     await add(ball);
   }

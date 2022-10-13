@@ -11,6 +11,7 @@ import 'paddle.dart';
 
 class Ball extends CircleComponent with CollisionCallbacks {
   Ball({
+    required this.velocity,
     required this.updateBall,
     required this.collisionBallScreenHitBox,
     required this.onBallRemove,
@@ -18,7 +19,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
     radius = kBallRadius;
     paint = Paint()..color = kBallColor;
   }
-  late Vector2 velocity;
+  final Vector2 velocity;
 
   final void Function(double dt) updateBall;
   final void Function(Vector2 collisionPoint) collisionBallScreenHitBox;
