@@ -1,7 +1,8 @@
+import 'dart:ui';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';
-import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
 
