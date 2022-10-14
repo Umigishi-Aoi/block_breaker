@@ -54,15 +54,12 @@ class BlockBreaker extends FlameGame
     }
 
     final ball = Ball(
-      updateBall: updateBall,
-      collisionBallScreenHitBox: collisionBallScreenHitBox,
       onBallRemove: onBallRemove,
     );
 
     ball.position
       ..x = size.x / 2 - ball.size.x / 2
       ..y = size.y * kBallStartYRatio;
-
     await add(ball);
   }
 
@@ -103,17 +100,6 @@ class BlockBreaker extends FlameGame
     await addAll(blocks);
   }
 
-  Future<void> failed({required bool uncontrolledFailure}) async {
-    if (!uncontrolledFailure) {
-      failedCount--;
-    }
-    if (isGameOver) {
-      await addMyTextButton('Game Over!');
-    } else {
-      await addMyTextButton('Retry');
-    }
-  }
-
   Future<void> onBlockRemove() async {
     if (isCleared) {
       await addMyTextButton('Clear!');
@@ -136,38 +122,14 @@ class BlockBreaker extends FlameGame
     }
   }
 
-  void updateBall(double dt) {
-    final ball = children.whereType<Ball>().first;
-    ball.position += ball.velocity * dt;
-
-    if (ball.position.y < -kBallUncontrolledPositionY) {
-      uncontrolledFailure = true;
-      ball.removeFromParent();
-    }
-
-    if (ball.position.y > size.y + kBallUncontrolledPositionY) {
-      ball.removeFromParent();
-    }
-  }
-
-  void collisionBallScreenHitBox(Vector2 collisionPoint) {
-    final ball = children.whereType<Ball>().first;
-    if (collisionPoint.x <= 0 || collisionPoint.x >= size.x) {
-      ball.velocity.x = -ball.velocity.x;
-    }
-    if (collisionPoint.y <= 0) {
-      ball.velocity.y = -ball.velocity.y;
-    }
-
-    if (collisionPoint.y >= size.y) {
-      ball.removeFromParent();
-    }
-  }
-
   Future<void> onBallRemove() async {
     if (!isCleared) {
-      await failed(uncontrolledFailure: uncontrolledFailure);
-      uncontrolledFailure = false;
+      failedCount--;
+      if (isGameOver) {
+        await addMyTextButton('Game Over!');
+      } else {
+        await addMyTextButton('Retry');
+      }
     }
   }
 

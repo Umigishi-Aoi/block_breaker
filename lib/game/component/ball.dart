@@ -11,8 +11,6 @@ import 'paddle.dart';
 
 class Ball extends CircleComponent with CollisionCallbacks {
   Ball({
-    required this.updateBall,
-    required this.collisionBallScreenHitBox,
     required this.onBallRemove,
   }) {
     radius = kBallRadius;
@@ -23,8 +21,9 @@ class Ball extends CircleComponent with CollisionCallbacks {
   }
   late Vector2 velocity;
 
-  final void Function(double dt) updateBall;
-  final void Function(Vector2 collisionPoint) collisionBallScreenHitBox;
+  bool isCollidedScreenHitBoxX = false;
+  bool isCollidedScreenHitBoxY = false;
+
   final Future<void> Function() onBallRemove;
 
   double get spawnAngle {
@@ -45,8 +44,7 @@ class Ball extends CircleComponent with CollisionCallbacks {
 
   @override
   void update(double dt) {
-    updateBall(dt);
-
+    position += velocity * dt;
     super.update(dt);
   }
 
@@ -62,10 +60,6 @@ class Ball extends CircleComponent with CollisionCallbacks {
     PositionComponent other,
   ) {
     final collisionPoint = intersectionPoints.first;
-    if (other is ScreenHitbox) {
-      collisionBallScreenHitBox(collisionPoint);
-    }
-
     if (other is b.Block) {
       final blockRect = other.toAbsoluteRect();
 
@@ -81,6 +75,39 @@ class Ball extends CircleComponent with CollisionCallbacks {
     FlameAudio.play('20221011_ball_hit.wav');
 
     super.onCollisionStart(intersectionPoints, other);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is ScreenHitbox) {
+      final screenHitBoxRect = other.toAbsoluteRect();
+
+      for (final point in intersectionPoints) {
+        if (point.x == screenHitBoxRect.left && !isCollidedScreenHitBoxX) {
+          velocity.x = -velocity.x;
+          isCollidedScreenHitBoxX = true;
+        }
+        if (point.x == screenHitBoxRect.right && !isCollidedScreenHitBoxX) {
+          velocity.x = -velocity.x;
+          isCollidedScreenHitBoxX = true;
+        }
+        if (point.y == screenHitBoxRect.top && !isCollidedScreenHitBoxY) {
+          velocity.y = -velocity.y;
+          isCollidedScreenHitBoxY = true;
+        }
+        if (point.y == screenHitBoxRect.bottom && !isCollidedScreenHitBoxY) {
+          removeFromParent();
+        }
+      }
+    }
+    super.onCollision(intersectionPoints, other);
+  }
+
+  @override
+  void onCollisionEnd(PositionComponent other) {
+    isCollidedScreenHitBoxX = false;
+    isCollidedScreenHitBoxY = false;
+    super.onCollisionEnd(other);
   }
 
   void updateBallTrajectory(
