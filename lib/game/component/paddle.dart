@@ -15,7 +15,7 @@ class Paddle extends RectangleComponent with CollisionCallbacks, DragCallbacks {
 
   final void Function(DragUpdateEvent event) draggingPaddle;
 
-  bool isDragged = false;
+  bool isDragging = false;
 
   @override
   Future<void>? onLoad() {
@@ -30,19 +30,19 @@ class Paddle extends RectangleComponent with CollisionCallbacks, DragCallbacks {
 
   @override
   void onDragStart(DragStartEvent event) {
-    isDragged = true;
+    isDragging = true;
     super.onDragStart(event);
   }
 
   @override
   void onDragEnd(DragEndEvent event) {
-    isDragged = false;
+    isDragging = false;
     super.onDragEnd(event);
   }
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
-    if (isDragged) {
+    if (isDragging) {
       draggingPaddle(event);
     }
     super.onDragUpdate(event);
