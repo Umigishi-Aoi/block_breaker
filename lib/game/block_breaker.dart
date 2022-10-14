@@ -23,7 +23,7 @@ class BlockBreaker extends FlameGame
 
   @override
   Future<void> onLoad() async {
-    final paddle = Paddle(draggingPaddleCallback: draggingPaddle);
+    final paddle = Paddle(draggingPaddle: draggingPaddle);
     final paddleSize = paddle.size;
     paddle
       ..position.x = size.x / 2 - paddleSize.x / 2
