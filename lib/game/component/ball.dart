@@ -15,8 +15,8 @@ class Ball extends CircleComponent with CollisionCallbacks {
   }) {
     radius = kBallRadius;
     paint = Paint()..color = kBallColor;
-    final vx = kBallSpeed * cos(spawnAngle * kDegree);
-    final vy = kBallSpeed * sin(spawnAngle * kDegree);
+    final vx = kBallSpeed * cos(spawnAngle * kRad);
+    final vy = kBallSpeed * sin(spawnAngle * kRad);
     velocity = Vector2(vx, vy);
   }
   late Vector2 velocity;

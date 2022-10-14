@@ -21,7 +21,7 @@ const double kBallUncontrolledPositionY = 10;
 const Color kBallColor = Colors.white;
 
 // Math Settings
-const double kDegree = pi / 180;
+const double kRad = pi / 180;
 
 //Button Settings
 const double kButtonWidth = 200;
