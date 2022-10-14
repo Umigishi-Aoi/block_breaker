@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:block_breaker/game/component/my_text_button.dart';
@@ -21,13 +20,6 @@ class BlockBreaker extends FlameGame
   bool get isCleared => children.whereType<Block>().isEmpty;
 
   bool get isGameOver => failedCount == 0;
-
-  double get spawnAngle {
-    final random = Random().nextDouble();
-    final spawnAngle =
-        lerpDouble(kBallMinSpawnAngle, kBallMaxSpawnAngle, random)!;
-    return spawnAngle;
-  }
 
   @override
   Future<void> onLoad() async {
@@ -61,11 +53,7 @@ class BlockBreaker extends FlameGame
       await Future<void>.delayed(const Duration(seconds: 1));
     }
 
-    final vx = kBallSpeed * cos(spawnAngle * kDegree);
-    final vy = kBallSpeed * sin(spawnAngle * kDegree);
-
     final ball = Ball(
-      velocity: Vector2(vx, vy),
       updateBall: updateBall,
       collisionBallScreenHitBox: collisionBallScreenHitBox,
       onBallRemove: onBallRemove,

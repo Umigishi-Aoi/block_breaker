@@ -11,19 +11,28 @@ import 'paddle.dart';
 
 class Ball extends CircleComponent with CollisionCallbacks {
   Ball({
-    required this.velocity,
     required this.updateBall,
     required this.collisionBallScreenHitBox,
     required this.onBallRemove,
   }) {
     radius = kBallRadius;
     paint = Paint()..color = kBallColor;
+    final vx = kBallSpeed * cos(spawnAngle * kDegree);
+    final vy = kBallSpeed * sin(spawnAngle * kDegree);
+    velocity = Vector2(vx, vy);
   }
-  final Vector2 velocity;
+  late Vector2 velocity;
 
   final void Function(double dt) updateBall;
   final void Function(Vector2 collisionPoint) collisionBallScreenHitBox;
   final Future<void> Function() onBallRemove;
+
+  double get spawnAngle {
+    final random = Random().nextDouble();
+    final spawnAngle =
+        lerpDouble(kBallMinSpawnAngle, kBallMaxSpawnAngle, random)!;
+    return spawnAngle;
+  }
 
   @override
   Future<void>? onLoad() async {
