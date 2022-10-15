@@ -55,8 +55,6 @@ class BlockBreaker extends FlameGame
       block.removeFromParent();
     });
 
-    failedCount = kGameTryCount;
-
     final sizeX = (size.x -
             kBlocksStartXPosition * 2 -
             kBlockPadding * (kBlocksRowCount - 1)) /
