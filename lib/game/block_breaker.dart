@@ -63,7 +63,7 @@ class BlockBreaker extends FlameGame
     final sizeY = (size.y * kBlocksHeightRatio -
             kBlocksStartYPosition -
             kBlockPadding * (kBlocksColumnCount - 1)) /
-        kBlocksRowCount;
+        kBlocksColumnCount;
 
     final blocks =
         List<Block>.generate(kBlocksColumnCount * kBlocksRowCount, (int index) {
