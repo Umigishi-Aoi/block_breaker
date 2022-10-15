@@ -15,7 +15,6 @@ import 'component/countdown_text.dart';
 class BlockBreaker extends FlameGame
     with HasCollisionDetection, HasDraggableComponents, HasTappableComponents {
   int failedCount = kGameTryCount;
-  bool uncontrolledFailure = false;
 
   bool get isCleared => children.whereType<Block>().isEmpty;
 
@@ -102,6 +101,17 @@ class BlockBreaker extends FlameGame
     await add(myTextButton);
   }
 
+  Future<void> onBallRemove() async {
+    if (!isCleared) {
+      failedCount--;
+      if (isGameOver) {
+        await addMyTextButton('Game Over!');
+      } else {
+        await addMyTextButton('Retry');
+      }
+    }
+  }
+
   Future<void> onBlockRemove() async {
     if (isCleared) {
       await addMyTextButton('Clear!');
@@ -121,17 +131,6 @@ class BlockBreaker extends FlameGame
     }
     if (paddle.position.x > size.x - paddle.size.x) {
       paddle.position.x = size.x - paddle.size.x;
-    }
-  }
-
-  Future<void> onBallRemove() async {
-    if (!isCleared) {
-      failedCount--;
-      if (isGameOver) {
-        await addMyTextButton('Game Over!');
-      } else {
-        await addMyTextButton('Retry');
-      }
     }
   }
 
