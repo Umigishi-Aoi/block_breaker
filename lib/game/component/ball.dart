@@ -21,8 +21,8 @@ class Ball extends CircleComponent with CollisionCallbacks {
   }
   late Vector2 velocity;
 
-  bool isCollidedScreenHitBoxX = false;
-  bool isCollidedScreenHitBoxY = false;
+  bool isCollidedScreenHitboxX = false;
+  bool isCollidedScreenHitboxY = false;
 
   final Future<void> Function() onBallRemove;
 
@@ -35,9 +35,9 @@ class Ball extends CircleComponent with CollisionCallbacks {
 
   @override
   Future<void>? onLoad() async {
-    final hitBox = CircleHitbox(radius: radius);
+    final hitbox = CircleHitbox(radius: radius);
 
-    await add(hitBox);
+    await add(hitbox);
 
     return super.onLoad();
   }
@@ -83,19 +83,19 @@ class Ball extends CircleComponent with CollisionCallbacks {
       final screenHitBoxRect = other.toAbsoluteRect();
 
       for (final point in intersectionPoints) {
-        if (point.x == screenHitBoxRect.left && !isCollidedScreenHitBoxX) {
+        if (point.x == screenHitBoxRect.left && !isCollidedScreenHitboxX) {
           velocity.x = -velocity.x;
-          isCollidedScreenHitBoxX = true;
+          isCollidedScreenHitboxX = true;
         }
-        if (point.x == screenHitBoxRect.right && !isCollidedScreenHitBoxX) {
+        if (point.x == screenHitBoxRect.right && !isCollidedScreenHitboxX) {
           velocity.x = -velocity.x;
-          isCollidedScreenHitBoxX = true;
+          isCollidedScreenHitboxX = true;
         }
-        if (point.y == screenHitBoxRect.top && !isCollidedScreenHitBoxY) {
+        if (point.y == screenHitBoxRect.top && !isCollidedScreenHitboxY) {
           velocity.y = -velocity.y;
-          isCollidedScreenHitBoxY = true;
+          isCollidedScreenHitboxY = true;
         }
-        if (point.y == screenHitBoxRect.bottom && !isCollidedScreenHitBoxY) {
+        if (point.y == screenHitBoxRect.bottom && !isCollidedScreenHitboxY) {
           removeFromParent();
         }
       }
@@ -105,8 +105,8 @@ class Ball extends CircleComponent with CollisionCallbacks {
 
   @override
   void onCollisionEnd(PositionComponent other) {
-    isCollidedScreenHitBoxX = false;
-    isCollidedScreenHitBoxY = false;
+    isCollidedScreenHitboxX = false;
+    isCollidedScreenHitboxY = false;
     super.onCollisionEnd(other);
   }
 

@@ -17,11 +17,11 @@ class Paddle extends RectangleComponent with CollisionCallbacks, DragCallbacks {
 
   @override
   Future<void>? onLoad() {
-    final paddleHitBox = RectangleHitbox(
+    final paddleHitbox = RectangleHitbox(
       size: size,
     );
 
-    add(paddleHitBox);
+    add(paddleHitbox);
 
     return super.onLoad();
   }
