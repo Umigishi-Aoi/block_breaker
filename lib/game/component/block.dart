@@ -20,11 +20,11 @@ class Block extends RectangleComponent with CollisionCallbacks {
 
   @override
   Future<void>? onLoad() async {
-    final blockHitBox = RectangleHitbox(
+    final blockHitbox = RectangleHitbox(
       size: size,
     );
 
-    await add(blockHitBox);
+    await add(blockHitbox);
 
     return super.onLoad();
   }
