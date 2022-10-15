@@ -41,18 +41,6 @@ class BlockBreaker extends FlameGame
   }
 
   Future<void> resetBall() async {
-    for (var i = kCountdownDuration; i > 0; i--) {
-      final countdownText = CountdownText(count: i);
-
-      countdownText.position
-        ..x = size.x / 2 - countdownText.size.x / 2
-        ..y = size.y / 2 - countdownText.size.y / 2;
-
-      await add(countdownText);
-
-      await Future<void>.delayed(const Duration(seconds: 1));
-    }
-
     final ball = Ball(
       onBallRemove: onBallRemove,
     );
@@ -100,6 +88,20 @@ class BlockBreaker extends FlameGame
     await addAll(blocks);
   }
 
+  Future<void> addMyTextButton(String text) async {
+    final myTextButton = MyTextButton(
+      text,
+      onTapDownMyTextButton: onTapDownMyTextButton,
+      renderMyTextButton: renderMyTextButton,
+    );
+
+    myTextButton.position
+      ..x = size.x / 2 - myTextButton.size.x / 2
+      ..y = size.y / 2 - myTextButton.size.y / 2;
+
+    await add(myTextButton);
+  }
+
   Future<void> onBlockRemove() async {
     if (isCleared) {
       await addMyTextButton('Clear!');
@@ -142,6 +144,7 @@ class BlockBreaker extends FlameGame
       await resetBlocks();
       failedCount = kGameTryCount;
     }
+    await countdown();
     await resetBall();
   }
 
@@ -158,17 +161,17 @@ class BlockBreaker extends FlameGame
     canvas.drawRect(rect, bgPaint);
   }
 
-  Future<void> addMyTextButton(String text) async {
-    final myTextButton = MyTextButton(
-      text,
-      onTapDownMyTextButton: onTapDownMyTextButton,
-      renderMyTextButton: renderMyTextButton,
-    );
+  Future<void> countdown() async {
+    for (var i = kCountdownDuration; i > 0; i--) {
+      final countdownText = CountdownText(count: i);
 
-    myTextButton.position
-      ..x = size.x / 2 - myTextButton.size.x / 2
-      ..y = size.y / 2 - myTextButton.size.y / 2;
+      countdownText.position
+        ..x = size.x / 2 - countdownText.size.x / 2
+        ..y = size.y / 2 - countdownText.size.y / 2;
 
-    await add(myTextButton);
+      await add(countdownText);
+
+      await Future<void>.delayed(const Duration(seconds: 1));
+    }
   }
 }
