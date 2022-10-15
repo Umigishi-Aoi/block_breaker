@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:block_breaker/game/component/my_text_button.dart';
-import 'package:block_breaker/game/component/paddle.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
@@ -11,6 +9,8 @@ import '../constants/constants.dart';
 import 'component/ball.dart';
 import 'component/block.dart';
 import 'component/countdown_text.dart';
+import 'component/my_text_button.dart';
+import 'component/paddle.dart';
 
 class BlockBreaker extends FlameGame
     with HasCollisionDetection, HasDraggableComponents, HasTappableComponents {
