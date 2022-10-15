@@ -111,9 +111,9 @@ class BlockBreaker extends FlameGame
 
   void draggingPaddle(DragUpdateEvent event) {
     final paddle = children.whereType<Paddle>().first;
-    if (paddle.position.x >= 0 && paddle.position.x <= size.x - paddle.size.x) {
-      paddle.position.x += event.delta.x;
-    }
+
+    paddle.position.x += event.delta.x;
+
     if (paddle.position.x < 0) {
       paddle.position.x = 0;
     }
